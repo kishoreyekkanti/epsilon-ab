@@ -1,0 +1,38 @@
+{
+  "name": "epsilon-ab",
+  "version": "1.0.0",
+  "description": "Full fledged A/B testing tool using epsilon greedy mechanism",
+  "main": "./src/main/epsilon_greedy.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "epsilon",
+    "a/b",
+    "greedy",
+    "testing"
+  ],
+  "author": "Yekkanti Kishore Kumar",
+  "license": "MIT",
+  "dependencies": {
+    "bluebird": "^2.9.5",
+    "lodash": "^3.0.1",
+    "moment": "^2.9.0",
+    "bunyan": "^1.2.1",
+    "shortid":"^2.1.3",
+    "request": "^2.34.0",
+    "restify": "^2.8.5",
+    "pg-promise": "^1.9.7",
+    "node-uuid":"1.4.3",
+    "cookie":"0.1.3",
+    "restify-cookies": "^0.1.1"
+  },
+  "devDependencies": {
+    "chai": "^1.10.0",
+    "mocha": "^2.1.0",
+    "sinon": "^1.12.2",
+    "sinon-as-promised":"2.0.3",
+    "supertest":"0.15.0",
+    "chai-as-promised":"4.2.0 "
+  }
+}
