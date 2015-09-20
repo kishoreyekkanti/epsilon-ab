@@ -43,7 +43,6 @@ var getOrCreateOption = function (req, res) {
                         res.send(epsTestProbability.data);
                     }
                 );
-
             }
 
         })

@@ -3,9 +3,13 @@ var Promise = require('bluebird');
 exports.guessOption = function (userUniqueId, testName) {
     return epsTests.findTestByName(testName)
         .then(function (data) {
-            return data ? selectOption(data).then(function (response) {
-                return response;
-            }) : data;
+            if (!data) {
+                return data;
+            }
+            return selectOption(data)
+                .then(function (response) {
+                    return response;
+                });
         })
         .catch(function (err) {
             return err;
@@ -34,9 +38,10 @@ var selectOption = function (testData) {
 
 var getOptionNumberBasedOnWeightage = function (weightage, totalConversion) {
     var selectedWeight = getRandomIntInclusive(0, totalConversion);
-    for (var key in weightage) {
-        if (weightage[key] >= selectedWeight) {
-            return key;
+    var sortedKeys = Object.keys(weightage).sort();
+    for (var i = 0; i < sortedKeys.length; i++) {
+        if (weightage[sortedKeys[i]] >= selectedWeight) {
+            return sortedKeys[i];
         }
     }
 };
