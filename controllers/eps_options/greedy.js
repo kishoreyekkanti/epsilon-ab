@@ -1,5 +1,7 @@
 var epsTests = require(global._ROOT + '/db/pgsql/eps_tests.js');
+var epsTestProbability = require(global._ROOT + '/db/pgsql/eps_test_probability');
 var Promise = require('bluebird');
+
 exports.guessOption = function (userUniqueId, testName) {
     return epsTests.findTestByName(testName)
         .then(function (data) {
@@ -19,7 +21,7 @@ var selectOption = function (testData) {
     var conversionPromises = [];
     testData.forEach(function (test) {
         conversionPromises.push(
-            epsTests.getConversionCountFor(test.test_name, test.option_no)
+            epsTestProbability.getConversionCountFor(test.test_name, test.option_no)
                 .then(function (results) {
                     totalConversion += test.weightage + results[0].totalconversioncount * 10;
                     weightHash[test.option_no] = totalConversion;

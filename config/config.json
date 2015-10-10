@@ -1,0 +1,13 @@
+{
+  "dev": {
+    "db": {
+      "pgsql": {
+        "host": "localhost",
+        "port": "5432",
+        "database": "eps",
+        "user": "epsuser",
+        "password": "epsuser"
+      }
+    }
+  }
+}
