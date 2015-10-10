@@ -11,7 +11,7 @@ if (cluster.isMaster && 'production' === process.env.NODE_ENV) {
     }
 } else {
     global._ROOT = process.env.PWD;
-    //global._ROOT = "/Users/yekkanti/personalProjects/node_learning/epsilon-ab";
+    global._ROOT = "/Users/yekkanti/personalProjects/node_learning/epsilon-ab";
     nconf.argv()
         .env()
         .file({file: global._ROOT + '/config/config.json'});
@@ -19,6 +19,7 @@ if (cluster.isMaster && 'production' === process.env.NODE_ENV) {
     global.DB_CONFIG = nconf.get(nconfENV + ":db");
     var restify = require('restify');
     var epsOptions = require('./controllers/eps_options/options');
+    var reward = require('./controllers/eps_options/reward');
     var logger = require('./log/logger');
     var server = restify.createServer({
         name: 'epsilon-ab-service',
@@ -73,6 +74,7 @@ if (cluster.isMaster && 'production' === process.env.NODE_ENV) {
         next();
     });
     server.get('/epsOption', epsOptions.get);
+    server.put('/epsOption/reward', reward.put);
 
     server.listen(port, function () {
         logger.info('epsilon ab server listening on port ' + port);

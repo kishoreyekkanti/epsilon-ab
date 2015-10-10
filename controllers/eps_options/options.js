@@ -2,6 +2,7 @@ var logger = require(global._ROOT + '/log/logger');
 var epsTestProbability = require(global._ROOT + '/db/pgsql/eps_test_probability');
 var ctr = require(global._ROOT + '/db/pgsql/ctr');
 var greedy = require(global._ROOT + '/controllers/eps_options/greedy');
+var errorHandler = require(global._ROOT + '/controllers/eps_options/error_handler');
 
 exports.get = function (req, res) {
     if (!req.params.user_unique_id || !req.params.test_name) {
@@ -23,7 +24,7 @@ var getOrCreateOption = function (req, res) {
 
         })
         .catch(function (err) {
-            sendErrorResponse(res, err);
+            errorHandler.sendErrorResponse(res, err);
         });
 };
 var upsertCTR = function (userUniqueId, testName, epsTestProbability, res) {
@@ -39,7 +40,7 @@ var createOption = function (userUniqueId, testName, res) {
     greedy.guessOption(userUniqueId, testName)
         .then(function (option) {
             if (!option) {
-                return res.send(500, {error: "unable to generate an option"});
+                return res.send(500, {error: "test name '"+testName+"' not found"});
             }
             epsTestProbability.createUserOption(userUniqueId, testName, option)
                 .then(function (userOptionCreated) {
@@ -51,12 +52,6 @@ var createOption = function (userUniqueId, testName, res) {
                 })
         })
         .catch(function (err) {
-            sendErrorResponse(res, err);
+            errorHandler.sendErrorResponse(res, err);
         })
-};
-
-var sendErrorResponse = function (res, err, message) {
-    message = message || "some thing went wrong with the request";
-    logger.error("Error in generating option", err);
-    return res.send(500, {error: message});
 };
