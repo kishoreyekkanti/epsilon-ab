@@ -24,7 +24,7 @@ exports.upsertCTR = function (userUniqueId, testName, optionNumber) {
 exports.reward = function (userUniqueId, testName, optionNumber) {
     var query = "update eps_greedy_ctr set reward = reward + 1 where \
                     user_unique_id=${userUniqueId} and test_name=${testName} and option_no=${optionNumber}";
-    return dbCommon.dbQuery(query, getOptions(userUniqueId, testName, optionNumber));
+    return dbCommon.dbQuery(query, dbCommon.getOptions(userUniqueId, testName, optionNumber));
 };
 
 var updateCTRTrialById = function (id) {
@@ -38,14 +38,5 @@ var updateCTRTrialById = function (id) {
 var insertIntoCTR = function (userUniqueId, testName, optionNumber) {
     var query = "insert into eps_greedy_ctr(user_unique_id, test_name, option_no, trial) values \
                  (${userUniqueId}, ${testName}, ${optionNumber}, 1)";
-    return dbCommon.dbQuery(query, getOptions(userUniqueId, testName, optionNumber));
-};
-
-
-var getOptions = function (userUniqueId, testName, optionNumber) {
-    return {
-        userUniqueId: userUniqueId,
-        testName: testName,
-        optionNumber: optionNumber
-    };
+    return dbCommon.dbQuery(query, dbCommon.getOptions(userUniqueId, testName, optionNumber));
 };

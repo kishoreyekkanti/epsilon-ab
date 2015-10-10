@@ -14,3 +14,11 @@ exports.dbQuery = function (query, options) {
             });
     });
 };
+
+exports.getOptions = function (userUniqueId, testName, optionNumber) {
+    return {
+        userUniqueId: userUniqueId,
+        testName: testName,
+        optionNumber: optionNumber
+    };
+};

@@ -20,6 +20,7 @@ if (cluster.isMaster && 'production' === process.env.NODE_ENV) {
     var restify = require('restify');
     var epsOptions = require('./controllers/eps_options/options');
     var reward = require('./controllers/eps_options/reward');
+    var epsTest = require('./controllers/eps_options/eps_test');
     var logger = require('./log/logger');
     var server = restify.createServer({
         name: 'epsilon-ab-service',
@@ -75,6 +76,7 @@ if (cluster.isMaster && 'production' === process.env.NODE_ENV) {
     });
     server.get('/epsOption', epsOptions.get);
     server.put('/epsOption/reward', reward.put);
+    server.put('/epsTest/conversion', epsTest.userConverted);
 
     server.listen(port, function () {
         logger.info('epsilon ab server listening on port ' + port);

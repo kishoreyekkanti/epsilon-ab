@@ -21,7 +21,6 @@ var getOrCreateOption = function (req, res) {
             } else {
                 upsertCTR(userUniqueId, testName, epsTestProbability, res);
             }
-
         })
         .catch(function (err) {
             errorHandler.sendErrorResponse(res, err);
@@ -31,7 +30,6 @@ var upsertCTR = function (userUniqueId, testName, epsTestProbability, res) {
     ctr.upsertCTR(userUniqueId, testName, epsTestProbability.data.option)
         .then(function (response) {
             return res.send(200, epsTestProbability.data);
-
         }
     );
 };
@@ -47,7 +45,6 @@ var createOption = function (userUniqueId, testName, res) {
                     ctr.upsertCTR(userUniqueId, testName, option)
                         .then(function (response) {
                             return res.send(201, {testName: testName, option: option, createdAt: new Date()});
-
                         });
                 })
         })

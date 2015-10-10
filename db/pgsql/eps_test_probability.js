@@ -35,6 +35,11 @@ exports.createUserOption = function (userUniqueId, testName, optionNumber) {
     return dbCommon.dbQuery(query, options);
 };
 
+exports.updateConversion = function(userUniqueId, testName, optionNumber){
+    var query = "update eps_test_probability set conversion = conversion + 1 where \
+                 user_unique_id=${userUniqueId} and test_name=${testName} and eps_option_no=${optionNumber}";
+    return dbCommon.dbQuery(query, dbCommon.getOptions(userUniqueId, testName, optionNumber));
+};
 var fetchConversionCount = function (testName, optionNumber) {
     var query = "select test_name, eps_option_no, count(*) as totalConversionCount from eps_test_probability \
                  where test_name=${name} and eps_option_no=${optionNumber}and conversion > 0 group by test_name, eps_option_no";

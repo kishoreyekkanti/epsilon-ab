@@ -1,11 +1,11 @@
-var ctr = require(global._ROOT + '/db/pgsql/ctr');
+var epsTestProbability = require(global._ROOT + '/db/pgsql/eps_test_probability');
 var errorHandler = require(global._ROOT + '/controllers/eps_options/error_handler');
 
-exports.put = function (req, res) {
+exports.userConverted = function (req, res) {
     if (req.body.testName && req.body.optionNumber && req.body.userUniqueId) {
-        ctr.reward(req.body.userUniqueId, req.body.testName, req.body.optionNumber)
+        epsTestProbability.updateConversion(req.body.userUniqueId, req.body.testName, req.body.optionNumber)
             .then(function (response) {
-                res.send(200, {"response": "reward updated"})
+                res.send(200, {"response": "conversion updated"})
             })
             .catch(function (err) {
                 errorHandler.sendErrorResponse(res, err);
