@@ -32,9 +32,6 @@ exports.getTestProbability = function (userUniqueId, testName) {
                 return buildEpsTestProbability(testName, data[0].eps_option_no, data[0].created_at);
             }
         })
-        .catch(function (err) {
-            return err;
-        });
 };
 
 exports.getConversionCountFor = function (testName, optionNumber) {

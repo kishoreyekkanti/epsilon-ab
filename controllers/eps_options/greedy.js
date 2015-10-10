@@ -11,9 +11,6 @@ exports.guessOption = function (userUniqueId, testName) {
                     return response;
                 });
         })
-        .catch(function (err) {
-            return err;
-        });
 };
 
 var selectOption = function (testData) {
