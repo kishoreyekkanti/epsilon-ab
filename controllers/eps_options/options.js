@@ -38,7 +38,7 @@ var createOption = function (userUniqueId, testName, res) {
     greedy.guessOption(userUniqueId, testName)
         .then(function (option) {
             if (!option) {
-                return res.send(500, {error: "test name '"+testName+"' not found"});
+                return res.send(500, {error: "test name '"+testName+"' not found. Create the test before using it"});
             }
             epsTestProbability.createUserOption(userUniqueId, testName, option)
                 .then(function (userOptionCreated) {
