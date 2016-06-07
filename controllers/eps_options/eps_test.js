@@ -39,6 +39,7 @@ exports.create = function (req, res) {
 
 exports.findById = function (req, res) {
 
+
 };
 
 exports.findAll = function (req, res) {
@@ -46,6 +47,31 @@ exports.findAll = function (req, res) {
 };
 
 exports.update = function (req, res) {
+    var testId = req.params.id;
+    var optionNumber = req.params.optionNumber;
+    if (testId && optionNumber) {
+        var options = req.body.options;
+        epsTestDbHandler.findTestById(testId, optionNumber)
+            .then(function (epsTest) {
+                console.log(epsTest);
+                if (!epsTest) {
+                    return res.send(500, {"response": "Unable to find a test for id " + testId + " and option number " + optionNumber});
+                }
+                epsTest.weightage = options.weightage ? options.weightage : epsTest.weightage;
+                epsTest.auto_optimise = options.auto_optimise ? options.auto_optimise : epsTest.auto_optimise;
+                epsTest.status = options.status ? options.status : epsTest.status;
+                epsTest.test_description = options.test_description ? options.test_description : epsTest.test_description;
+                return epsTestDbHandler.update(epsTest)
+                    .then(function (updateStatus) {
+                        res.send(200, {"response": "Eps option updated successfully"})
+                    });
+            })
+            .catch(function (err) {
+                errorHandler.sendErrorResponse(res, err);
+            })
+    } else {
+        res.send(400, {"response": "Test Id or Option Number is missing"});
+    }
 
 };
 

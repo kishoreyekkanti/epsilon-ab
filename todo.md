@@ -3,10 +3,14 @@
 3. Figure out adapter model - LATER
 4. create another api to update/increment reward - DONE
 5. create api to update conversion - DONE
-6. create api to create/update test
+6. create api to create/update test - DONE
 7. Mark a test as closed
 8. Based on 7 we might have to re do between active in active and winner states
-9. Think of how to use aut optimise
+9. Think of how to use auto optimise
+10. Expose an endpoint to calculate the stats of the tests
+11. General refactoring of code - clear node modules and usage of pm2
+12. Publishing as node module?
+13. add updated_at to eps_tests - DONE
 
 ```
 {
