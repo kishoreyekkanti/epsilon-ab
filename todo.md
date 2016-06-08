@@ -6,7 +6,7 @@
 6. create api to create/update test - DONE
 7. Mark a test as closed
 8. Based on 7 we might have to re do between active in active and winner states
-9. Think of how to use auto optimise
+9. Think of how to use auto optimise - DONE
 10. Expose an endpoint to calculate the stats of the tests
 11. General refactoring of code - clear node modules and usage of pm2
 12. Publishing as node module?

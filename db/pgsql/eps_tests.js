@@ -7,10 +7,7 @@ exports.findTestByName = function (testName) {
                 return null;
             }
             return data;
-        })
-        .catch(function (err) {
-            return err;
-        })
+        });
 };
 
 exports.create = function (epsTest) {
@@ -28,19 +25,23 @@ exports.create = function (epsTest) {
     return dbCommon.dbQuery(query, options);
 };
 
-exports.findTestById = function (id, optionNumber) {
+exports.findTestByIdAndOptionNumber = function (id, optionNumber) {
     var query = "select * from eps_tests where id = ${id} and option_no = ${option_no}";
     var options = {
         id: id,
         option_no: optionNumber
     };
-    return dbCommon.dbQuery(query, options)
-        .then(function (data) {
-            if (!data || data.length === 0) {
-                return null;
-            }
-            return data[0];
-        });
+    return dbCommon.findOne(query, options);
+};
+
+exports.findTestById = function (id) {
+    var query = "select * from eps_tests where id = $1";
+    return dbCommon.findOne(query, id)
+};
+
+exports.findAll = function(){
+    var query = "select * from eps_tests order by id desc limit 5000"; //you are screwed if you are running these many tests
+    return dbCommon.dbQuery(query);
 };
 
 exports.update = function (epsTest) {
