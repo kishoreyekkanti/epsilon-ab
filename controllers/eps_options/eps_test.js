@@ -76,7 +76,7 @@ exports.update = function (req, res) {
                     return res.send(500, {"response": "Unable to find a test for id " + testId + " and option number " + optionNumber});
                 }
                 epsTest.weightage = options.weightage ? options.weightage : epsTest.weightage;
-                epsTest.auto_optimise = options.auto_optimise ? options.auto_optimise : epsTest.auto_optimise;
+                epsTest.auto_optimise = options.auto_optimise && [true, false].indexOf(options.auto_optimise) > -1 ? options.auto_optimise : epsTest.auto_optimise;
                 epsTest.status = options.status ? options.status : epsTest.status;
                 epsTest.test_description = options.test_description ? options.test_description : epsTest.test_description;
                 return epsTestDbHandler.update(epsTest)
@@ -93,6 +93,31 @@ exports.update = function (req, res) {
 
 };
 
+exports.stats = function (req, res) {
+    var testName = req.params.name;
+    epsTestDbHandler.findTestByName(testName)
+        .then(function (epsTests) {
+            if (!epsTests) {
+                return res.send(500, {"response": "Unable to find a test for id " + testName});
+            }
+            var stats = initialiseStats(epsTests);
+            var statsPromises = [];
+            stats.options.forEach(function (option) {
+                statsPromises.push(fetchStats(testName, option));
+            });
+            return Promise.all(statsPromises)
+                .then(function (results) {
+                    var statsHash = {};
+                    statsHash.test_name = testName;
+                    statsHash.options = results;
+                    res.send(200, statsHash);
+                });
+        })
+        .catch(function (err) {
+            errorHandler.sendErrorResponse(res, err);
+        })
+};
+
 function buildEpsTest(epsTestDetails, option) {
     return new EPSTest(
         {
@@ -104,4 +129,42 @@ function buildEpsTest(epsTestDetails, option) {
             test_description: option.test_description
         }
     );
+}
+
+function initialiseStats(epsTests) {
+    var stats = {};
+    stats.options = [];
+    epsTests.forEach(function (epsTest) {
+        stats.test_name = epsTest.test_name;
+        var optionHash = {
+            option_no: epsTest.option_no,
+            weightage: epsTest.weightage,
+            auto_optimise: epsTest.auto_optimise,
+            status: epsTest.status,
+            test_description: epsTest.test_description
+        };
+        stats.options.push(optionHash);
+    });
+    return stats;
+}
+
+function fetchStats(testName, option) {
+    var stats = {};
+    return epsTestDbHandler.findCTR(testName, option.option_no)
+        .then(function (epsTestCTR) {
+            stats.option_no = epsTestCTR.option_no;
+            stats.trial = epsTestCTR.trial;
+            stats.reward = epsTestCTR.reward;
+            stats.weightage = option.weightage;
+            stats.auto_optimise = option.auto_optimise;
+            stats.status = option.status;
+            stats.test_description = option.test_description;
+            return stats;
+        }).then(function (ctrStats) {
+            return epsTestDbHandler.findConversionStats(testName, option.option_no)
+                .then(function (conversionStats) {
+                    ctrStats.conversion = conversionStats.conversion;
+                    return ctrStats;
+                });
+        });
 }

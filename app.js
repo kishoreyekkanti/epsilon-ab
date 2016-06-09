@@ -81,6 +81,7 @@ if (cluster.isMaster && 'production' === process.env.NODE_ENV) {
     server.get('/epsTest/:id', epsTest.findById);
     server.get('/epsTest', epsTest.findAll);
     server.post('/epsTest/:id/:optionNumber', epsTest.update);
+    server.get('/epsTest/:name/stats', epsTest.stats);
 
     server.listen(port, function () {
         logger.info('epsilon ab server listening on port ' + port);

@@ -39,7 +39,7 @@ exports.findTestById = function (id) {
     return dbCommon.findOne(query, id)
 };
 
-exports.findAll = function(){
+exports.findAll = function () {
     var query = "select * from eps_tests order by id desc limit 5000"; //you are screwed if you are running these many tests
     return dbCommon.dbQuery(query);
 };
@@ -58,8 +58,33 @@ exports.update = function (epsTest) {
     };
     return dbCommon.dbQuery(query, options);
 };
-var fetchTestByName = function (testName) {
-    var query = "select * from eps_tests where test_name=$1";
-    return dbCommon.dbQuery(query, testName);
+
+exports.findCTR = function (test_name, option_no) {
+    var query = "select test_name, option_no, sum(trial) as trial, sum(reward) as reward from eps_greedy_ctr \
+                 where test_name = ${test_name} and option_no = ${option_no} group by test_name, option_no";
+    var options = getQueryOptionsFor(test_name, option_no);
+    return dbCommon.findOne(query, options);
 };
 
+exports.findConversionStats = function (test_name, option_no) {
+    var query = "select test_name, eps_option_no, sum(conversion) as conversion from eps_test_probability \
+             where test_name = ${test_name} and eps_option_no = ${option_no} group by test_name, eps_option_no";
+    var options = getQueryOptionsFor(test_name, option_no);
+    return dbCommon.findOne(query, options);
+};
+
+var fetchTestByName = function (testName) {
+    var query = "select * from eps_tests where test_name=${testName} and status = ${status}";
+    var options = {
+        testName: testName,
+        status: 'active'
+    };
+    return dbCommon.dbQuery(query, options);
+};
+
+function getQueryOptionsFor(test_name, option_no) {
+    return {
+        test_name: test_name,
+        option_no: option_no
+    };
+}

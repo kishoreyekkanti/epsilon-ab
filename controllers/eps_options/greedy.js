@@ -24,7 +24,7 @@ var selectOption = function (testData) {
             epsTestProbability.getConversionCountFor(test.test_name, test.option_no)
                 .then(function (results) {
                     totalConversion += test.weightage;
-                    if (test.auto_optimise === 1) {
+                    if (test.auto_optimise) {
                         totalConversion += results[0].totalconversioncount * 10; //10 is the multiplication factor to give more credit to high converted test.
                     }
                     weightHash[test.option_no] = totalConversion;
