@@ -25,7 +25,8 @@ var selectOption = function (testData) {
                 .then(function (results) {
                     totalConversion += test.weightage;
                     if (test.auto_optimise) {
-                        totalConversion += results[0].totalconversioncount * 10; //10 is the multiplication factor to give more credit to high converted test.
+                        //10 is the multiplication factor to give more credit to high converted test.
+                        totalConversion += results && results[0] && results[0].totalconversioncount ? results[0].totalconversioncount * 10 : 0;
                     }
                     weightHash[test.option_no] = totalConversion;
                     return weightHash;

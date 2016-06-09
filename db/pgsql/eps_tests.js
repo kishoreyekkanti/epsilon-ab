@@ -67,8 +67,8 @@ exports.findCTR = function (test_name, option_no) {
 };
 
 exports.findConversionStats = function (test_name, option_no) {
-    var query = "select test_name, eps_option_no, sum(conversion) as conversion from eps_test_probability \
-             where test_name = ${test_name} and eps_option_no = ${option_no} group by test_name, eps_option_no";
+    var query = "select test_name, option_no, sum(conversion) as conversion from eps_test_probability \
+             where test_name = ${test_name} and option_no = ${option_no} group by test_name, option_no";
     var options = getQueryOptionsFor(test_name, option_no);
     return dbCommon.findOne(query, options);
 };

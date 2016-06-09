@@ -12,6 +12,8 @@
 12. Publishing as node module?
 13. add updated_at to eps_tests - DONE
 14. Mysql extension
+15. Easy start with table creation
+16. Update domain id
 
 ```
 {

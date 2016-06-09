@@ -10,4 +10,5 @@ CREATE TABLE eps_tests(
     updated_at timestamp DEFAULT NULL
 )
 
-create unique index  test_name_option_no on eps_tests(test_name, option_no);
+create unique index test_name_option_no on eps_tests(test_name, option_no);
+create index et_test_name_idx on eps_tests(test_name);

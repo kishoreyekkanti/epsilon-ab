@@ -5,16 +5,23 @@ var epsTestDbHandler = require(global._ROOT + '/db/pgsql/eps_tests');
 var Promise = require('bluebird');
 
 exports.userConverted = function (req, res) {
-    if (req.body.testName && req.body.optionNumber && req.body.userUniqueId) {
-        epsTestProbability.updateConversion(req.body.userUniqueId, req.body.testName, req.body.optionNumber)
-            .then(function (response) {
-                res.send(200, {"response": "conversion updated"})
+    if (req.body.user_unique_id) {
+        epsTestProbability.fetchProbabilityByUserUniqueId(req.body.user_unique_id)
+            .then(function (testProbability) {
+                if (!testProbability) {
+                    res.send(400, {"response": "user_unique_id not found"});
+                }
+                return epsTestProbability.updateConversion(req.body.user_unique_id, testProbability.test_name, testProbability.option_no)
+                    .then(function (response) {
+                        res.send(200, {"response": "conversion updated"})
+                    })
             })
             .catch(function (err) {
                 errorHandler.sendErrorResponse(res, err);
             });
+
     } else {
-        res.send(400, {"response": "One (or) all of 'testName, optionNumber and userUniqueId' are missing"});
+        res.send(400, {"response": "user_unique_id is required"});
     }
 };
 
@@ -27,13 +34,13 @@ exports.create = function (req, res) {
                 return epsTestDbHandler.create(epsTest);
             })
             .then(function () {
-                res.send(201, {"response": "saved the eps tests"})
+                res.send(201, {"response": "Saved the AB tests successfully"})
             })
             .catch(function (err) {
                 errorHandler.sendErrorResponse(res, err);
             });
     } else {
-        res.send(400, {"response": "test options are missing"});
+        res.send(400, {"response": "Test options are mandatory"});
     }
 };
 
@@ -152,9 +159,11 @@ function fetchStats(testName, option) {
     var stats = {};
     return epsTestDbHandler.findCTR(testName, option.option_no)
         .then(function (epsTestCTR) {
-            stats.option_no = epsTestCTR.option_no;
-            stats.trial = epsTestCTR.trial;
-            stats.reward = epsTestCTR.reward;
+            stats.option_no = option.option_no;
+            if(epsTestCTR){
+                stats.trial = epsTestCTR.trial;
+                stats.reward = epsTestCTR.reward;
+            }
             stats.weightage = option.weightage;
             stats.auto_optimise = option.auto_optimise;
             stats.status = option.status;
@@ -163,7 +172,7 @@ function fetchStats(testName, option) {
         }).then(function (ctrStats) {
             return epsTestDbHandler.findConversionStats(testName, option.option_no)
                 .then(function (conversionStats) {
-                    ctrStats.conversion = conversionStats.conversion;
+                    ctrStats.conversion = conversionStats ? conversionStats.conversion : 0;
                     return ctrStats;
                 });
         });

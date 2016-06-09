@@ -12,29 +12,30 @@
     "greedy",
     "testing"
   ],
-  "author": "Yekkanti Kishore Kumar",
+  "author": "Kishore Kumar Yekkanti",
   "license": "MIT",
   "dependencies": {
     "bluebird": "^2.9.5",
     "lodash": "^3.0.1",
     "moment": "^2.9.0",
     "bunyan": "^1.2.1",
-    "shortid":"^2.1.3",
+    "shortid": "^2.1.3",
     "request": "^2.34.0",
     "restify": "^2.8.5",
     "pg-promise": "^1.9.7",
-    "node-uuid":"1.4.3",
-    "cookie":"0.1.3",
+    "node-uuid": "1.4.3",
+    "cookie": "0.1.3",
     "restify-cookies": "^0.1.1",
-    "nconf":"0.8.2",
-    "underscore":"1.8.3"
+    "nconf": "0.8.2",
+    "underscore": "1.8.3",
+    "pm2": "0.15.10"
   },
   "devDependencies": {
     "chai": "^1.10.0",
     "mocha": "^2.1.0",
     "sinon": "^1.12.2",
-    "sinon-as-promised":"2.0.3",
-    "supertest":"0.15.0",
-    "chai-as-promised":"4.2.0 "
+    "sinon-as-promised": "2.0.3",
+    "supertest": "0.15.0",
+    "chai-as-promised": "4.2.0 "
   }
 }
