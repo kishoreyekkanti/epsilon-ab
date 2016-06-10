@@ -1,4 +1,4 @@
-var dbCommon = require(global._ROOT + '/db/pgsql/pg_common');
+var dbCommon = require(global._ROOT + '/db/pgsql/db_common');
 
 exports.upsertCTR = function (userUniqueId, testName, optionNumber) {
     var query = "select * from eps_greedy_ctr where user_unique_id=${unique_id} and test_name=${testName} \
@@ -8,7 +8,7 @@ exports.upsertCTR = function (userUniqueId, testName, optionNumber) {
         testName: testName,
         optionNumber: optionNumber
     };
-    return dbCommon.dbQuery(query, options)
+    return dbCommon.executeQuery(query, options)
         .then(function (res) {
             if (res && res.length === 1) {
                 return updateCTRTrialById(res[0].id);
@@ -24,7 +24,7 @@ exports.upsertCTR = function (userUniqueId, testName, optionNumber) {
 exports.reward = function (userUniqueId, testName, optionNumber) {
     var query = "update eps_greedy_ctr set reward = reward + 1 where \
                     user_unique_id=${userUniqueId} and test_name=${testName} and option_no=${optionNumber}";
-    return dbCommon.dbQuery(query, dbCommon.getOptions(userUniqueId, testName, optionNumber));
+    return dbCommon.executeQuery(query, dbCommon.getOptions(userUniqueId, testName, optionNumber));
 };
 
 var updateCTRTrialById = function (id) {
@@ -32,11 +32,11 @@ var updateCTRTrialById = function (id) {
     var options = {
         id: id
     };
-    return dbCommon.dbQuery(query, options);
+    return dbCommon.executeQuery(query, options);
 };
 
 var insertIntoCTR = function (userUniqueId, testName, optionNumber) {
     var query = "insert into eps_greedy_ctr(user_unique_id, test_name, option_no, trial) values \
                  (${userUniqueId}, ${testName}, ${optionNumber}, 1)";
-    return dbCommon.dbQuery(query, dbCommon.getOptions(userUniqueId, testName, optionNumber));
+    return dbCommon.executeQuery(query, dbCommon.getOptions(userUniqueId, testName, optionNumber));
 };

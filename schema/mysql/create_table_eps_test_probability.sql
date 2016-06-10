@@ -1,0 +1,12 @@
+CREATE TABLE eps_test_probability(
+    user_unique_id varchar(300) NOT NULL,
+    test_name varchar(200) NOT NULL,
+    option_no integer NOT NULL,
+    conversion integer default 0,
+    user_domain_id integer default 0,
+    created_at timestamp NOT NULL DEFAULT current_timestamp,
+    PRIMARY KEY (user_unique_id),
+    index etp_test_name_idx(test_name),
+    index etp_test_name_option_no_idx(test_name, option_no),
+    UNIQUE KEY unique_id_test_name_option(user_unique_id, test_name, option_no)
+)ENGINE = InnoDB;

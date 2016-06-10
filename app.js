@@ -10,6 +10,10 @@ nconf.argv()
 var nconfENV = nconf.get('NODE_ENV') || 'dev';
 global.DB_CONFIG = nconf.get(nconfENV + ":db");
 
+if(global.DB_CONFIG['default']['name'] === 'mysql'){
+    var mysql = require('mysql');
+    global._MYSQL_CONNECTION_POOL = mysql.createPool(global.DB_CONFIG['default']);
+}
 var restify = require('restify');
 var epsOptions = require('./controllers/eps_options/options');
 var reward = require('./controllers/eps_options/reward');

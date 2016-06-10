@@ -1,5 +1,5 @@
 var EPSTestProbability = require(global._ROOT + '/model/eps_test_probability');
-var dbCommon = require(global._ROOT + '/db/pgsql/pg_common');
+var dbCommon = require(global._ROOT + '/db/pgsql/db_common');
 
 exports.getTestProbability = function (userUniqueId, testName) {
     return fetchTestProbability(userUniqueId, testName)
@@ -22,7 +22,6 @@ exports.getConversionCountFor = function (testName, optionNumber) {
         })
 };
 
-
 exports.createUserOption = function (userUniqueId, testName, optionNumber) {
     var query = "insert into eps_test_probability(user_unique_id, test_name, option_no) \
                  values\
@@ -32,18 +31,13 @@ exports.createUserOption = function (userUniqueId, testName, optionNumber) {
         test_name: testName,
         option_no: optionNumber
     };
-    return dbCommon.dbQuery(query, options);
+    return dbCommon.executeQuery(query, options);
 };
 
 exports.updateConversion = function(userUniqueId, testName, optionNumber){
     var query = "update eps_test_probability set conversion = conversion + 1 where \
                  user_unique_id=${userUniqueId} and test_name=${testName} and option_no=${optionNumber}";
-    var options = {
-        name: testName,
-        optionNumber: optionNumber
-    };
-
-    return dbCommon.dbQuery(query, dbCommon.getOptions(userUniqueId, testName, optionNumber));
+    return dbCommon.executeQuery(query, dbCommon.getOptions(userUniqueId, testName, optionNumber));
 };
 
 exports.fetchProbabilityByUserUniqueId = function(userUniqueId){
@@ -51,7 +45,7 @@ exports.fetchProbabilityByUserUniqueId = function(userUniqueId){
     var options = {
         unique_id: userUniqueId
     };
-    return dbCommon.findOne(query, options);
+    return dbCommon.executeQueryAndFindOne(query, options);
 };
 
 
@@ -62,9 +56,8 @@ var fetchConversionCount = function (testName, optionNumber) {
         name: testName,
         optionNumber: optionNumber
     };
-    return dbCommon.dbQuery(query, options);
+    return dbCommon.executeQuery(query, options);
 };
-
 
 var fetchTestProbability = function (userUniqueId, testName) {
     var query = "select * from eps_test_probability etp  where test_name=${name} and user_unique_id=${unique_id}";
@@ -72,7 +65,7 @@ var fetchTestProbability = function (userUniqueId, testName) {
         name: testName,
         unique_id: userUniqueId
     };
-    return dbCommon.dbQuery(query, options);
+    return dbCommon.executeQuery(query, options);
 };
 
 var buildEpsTestProbability = function (testName, option, createdAt) {

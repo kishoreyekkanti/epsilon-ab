@@ -8,7 +8,7 @@
 8. Based on 7 we might have to re do between active in active and winner states - DONE
 9. Think of how to use auto optimise - DONE
 10. Expose an endpoint to calculate the stats of the tests - DONE
-11. General refactoring of code - clear node modules and usage of pm2
+11. General refactoring of code - clear node modules and usage of pm2 - DONE
 12. Publishing as node module?
 13. add updated_at to eps_tests - DONE
 14. Mysql extension
