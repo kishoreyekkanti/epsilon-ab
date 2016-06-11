@@ -1,5 +1,6 @@
 var EPSTestProbability = require(global._ROOT + '/model/eps_test_probability');
 var dbCommon = require(global._ROOT + '/db/pgsql/db_common');
+var testProbabilityQuery = require(global._ROOT + '/db/queries/eps_test_probability');
 
 exports.getTestProbability = function (userUniqueId, testName) {
     return fetchTestProbability(userUniqueId, testName)
@@ -23,9 +24,7 @@ exports.getConversionCountFor = function (testName, optionNumber) {
 };
 
 exports.createUserOption = function (userUniqueId, testName, optionNumber) {
-    var query = "insert into eps_test_probability(user_unique_id, test_name, option_no) \
-                 values\
-                 (${user_unique_id}, ${test_name}, ${option_no})";
+    var query = testProbabilityQuery.createUserOption();
     var options = {
         user_unique_id: userUniqueId,
         test_name: testName,
@@ -34,14 +33,13 @@ exports.createUserOption = function (userUniqueId, testName, optionNumber) {
     return dbCommon.executeQuery(query, options);
 };
 
-exports.updateConversion = function(userUniqueId, testName, optionNumber){
-    var query = "update eps_test_probability set conversion = conversion + 1 where \
-                 user_unique_id=${userUniqueId} and test_name=${testName} and option_no=${optionNumber}";
+exports.updateConversion = function (userUniqueId, testName, optionNumber) {
+    var query = testProbabilityQuery.updateConversion();
     return dbCommon.executeQuery(query, dbCommon.getOptions(userUniqueId, testName, optionNumber));
 };
 
-exports.fetchProbabilityByUserUniqueId = function(userUniqueId){
-    var query = "select * from eps_test_probability  where user_unique_id=${unique_id}";
+exports.fetchProbabilityByUserUniqueId = function (userUniqueId) {
+    var query = testProbabilityQuery.fetchProbabilityByUserUniqueId();
     var options = {
         unique_id: userUniqueId
     };
@@ -50,8 +48,7 @@ exports.fetchProbabilityByUserUniqueId = function(userUniqueId){
 
 
 var fetchConversionCount = function (testName, optionNumber) {
-    var query = "select test_name, option_no, count(*) as totalConversionCount from eps_test_probability \
-                 where test_name=${name} and option_no=${optionNumber}and conversion > 0 group by test_name, option_no";
+    var query = testProbabilityQuery.fetchConversionCount();
     var options = {
         name: testName,
         optionNumber: optionNumber
@@ -60,7 +57,7 @@ var fetchConversionCount = function (testName, optionNumber) {
 };
 
 var fetchTestProbability = function (userUniqueId, testName) {
-    var query = "select * from eps_test_probability etp  where test_name=${name} and user_unique_id=${unique_id}";
+    var query = testProbabilityQuery.fetchTestProbability();
     var options = {
         name: testName,
         unique_id: userUniqueId

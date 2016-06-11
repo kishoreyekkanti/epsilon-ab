@@ -160,10 +160,8 @@ function fetchStats(testName, option) {
     return epsTestDbHandler.findCTR(testName, option.option_no)
         .then(function (epsTestCTR) {
             stats.option_no = option.option_no;
-            if(epsTestCTR){
-                stats.trial = epsTestCTR.trial;
-                stats.reward = epsTestCTR.reward;
-            }
+            stats.trial = epsTestCTR ? epsTestCTR.trial : 0;
+            stats.reward = epsTestCTR ? epsTestCTR.reward : 0;
             stats.weightage = option.weightage;
             stats.auto_optimise = option.auto_optimise;
             stats.status = option.status;

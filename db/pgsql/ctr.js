@@ -1,8 +1,8 @@
 var dbCommon = require(global._ROOT + '/db/pgsql/db_common');
+var ctrQuery = require(global._ROOT + '/db/queries/ctr');
 
 exports.upsertCTR = function (userUniqueId, testName, optionNumber) {
-    var query = "select * from eps_greedy_ctr where user_unique_id=${unique_id} and test_name=${testName} \
-                 and option_no=${optionNumber}";
+    var query = ctrQuery.upsertCTR();
     var options = {
         unique_id: userUniqueId,
         testName: testName,
@@ -12,7 +12,7 @@ exports.upsertCTR = function (userUniqueId, testName, optionNumber) {
         .then(function (res) {
             if (res && res.length === 1) {
                 return updateCTRTrialById(res[0].id);
-            } else if (res.length === 0) {
+            } else if (res == null || res.length === 0) {
                 return insertIntoCTR(userUniqueId, testName, optionNumber);
             }
         })
@@ -22,13 +22,12 @@ exports.upsertCTR = function (userUniqueId, testName, optionNumber) {
 };
 
 exports.reward = function (userUniqueId, testName, optionNumber) {
-    var query = "update eps_greedy_ctr set reward = reward + 1 where \
-                    user_unique_id=${userUniqueId} and test_name=${testName} and option_no=${optionNumber}";
+    var query = ctrQuery.reward();
     return dbCommon.executeQuery(query, dbCommon.getOptions(userUniqueId, testName, optionNumber));
 };
 
 var updateCTRTrialById = function (id) {
-    var query = "update eps_greedy_ctr set trial = trial + 1 where id=${id}";
+    var query = ctrQuery.updateCTRTrail();
     var options = {
         id: id
     };
@@ -36,7 +35,7 @@ var updateCTRTrialById = function (id) {
 };
 
 var insertIntoCTR = function (userUniqueId, testName, optionNumber) {
-    var query = "insert into eps_greedy_ctr(user_unique_id, test_name, option_no, trial) values \
-                 (${userUniqueId}, ${testName}, ${optionNumber}, 1)";
-    return dbCommon.executeQuery(query, dbCommon.getOptions(userUniqueId, testName, optionNumber));
+    var query = ctrQuery.insertIntoCTR();
+    var options = dbCommon.getOptions(userUniqueId, testName, optionNumber);
+    return dbCommon.executeQuery(query, options);
 };
