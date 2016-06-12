@@ -11,8 +11,8 @@
 11. General refactoring of code - clear node modules and usage of pm2 - DONE
 12. Publishing as node module?
 13. add updated_at to eps_tests - DONE
-14. Mysql extension
-15. Easy start with table creation
+14. Mysql extension - DONE
+15. Easy start with table creation - DONE
 16. Update domain id
 
 ```

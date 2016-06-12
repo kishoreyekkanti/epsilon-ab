@@ -10,6 +10,7 @@
         "name": "pgsql"
       },
       "mysql": {
+        "name": "mysql",
         "host": "localhost",
         "port": "3306",
         "database": "eps",
@@ -20,13 +21,11 @@
       },
       "default": {
         "host": "localhost",
-        "port": "3306",
-        "database": "try-php",
-        "user": "root",
-        "password": "root",
-        "connectionLimit": 5,
-        "socketPath": "/Applications/MAMP/tmp/mysql/mysql.sock",
-        "name": "mysql"
+        "port": "5432",
+        "database": "eps",
+        "user": "epsuser",
+        "password": "epsuser",
+        "name": "pgsql"
       }
     }
   }

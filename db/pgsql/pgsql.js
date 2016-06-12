@@ -33,8 +33,13 @@ var getOptions = function (userUniqueId, testName, optionNumber) {
     };
 };
 
+var haveAllRequiredTables = function () {
+    var query = "select * from pg_tables where schemaname='public' and tablename in('eps_tests','eps_greedy_ctr','eps_test_probability')"
+    return dbQuery(query, {});
+};
 module.exports = {
     dbQuery: dbQuery,
     findOne: findOne,
-    getOptions: getOptions
+    getOptions: getOptions,
+    haveAllRequiredTables: haveAllRequiredTables
 };

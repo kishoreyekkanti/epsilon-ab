@@ -11,8 +11,9 @@ exports.userConverted = function (req, res) {
                 if (!testProbability) {
                     res.send(400, {"response": "user_unique_id not found"});
                 }
-                return epsTestProbability.updateConversion(req.body.user_unique_id, testProbability.test_name, testProbability.option_no)
-                    .then(function (response) {
+                return epsTestProbability.updateConversion(
+                    req.body.user_unique_id, testProbability.test_name, testProbability.option_no
+                ).then(function (response) {
                         res.send(200, {"response": "conversion updated"})
                     })
             })

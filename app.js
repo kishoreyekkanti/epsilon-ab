@@ -3,17 +3,12 @@ var cookie = require('cookie');
 var cookieParser = require('restify-cookies');
 var nconf = require('nconf');
 global._ROOT = process.env.PWD;
-//global._ROOT = "/Users/yekkanti/personalProjects/node_learning/epsilon-ab";
 nconf.argv()
     .env()
     .file({file: global._ROOT + '/config/config.json'});
 var nconfENV = nconf.get('NODE_ENV') || 'dev';
 global.DB_CONFIG = nconf.get(nconfENV + ":db");
-
-if(global.DB_CONFIG['default']['name'] === 'mysql'){
-    var mysql = require('mysql');
-    global._MYSQL_CONNECTION_POOL = mysql.createPool(global.DB_CONFIG['default']);
-}
+checkIfRequiredTablesExists();
 var restify = require('restify');
 var epsOptions = require('./controllers/eps_options/options');
 var reward = require('./controllers/eps_options/reward');
@@ -84,3 +79,26 @@ server.get('/epsTest/:name/stats', epsTest.stats);
 server.listen(port, function () {
     logger.info('epsilon ab server listening on port ' + port);
 });
+
+function checkIfRequiredTablesExists() {
+    if (global.DB_CONFIG['default']['name'] === 'mysql') {
+        var mysql = require('mysql');
+        global._MYSQL_CONNECTION_POOL = mysql.createPool(global.DB_CONFIG['default']);
+        var mysqlClient = require(global._ROOT + '/db/pgsql/mysql_client');
+        new Promise(function (resolve, reject) {
+            mysqlClient.haveAllRequiredTables(global._MYSQL_CONNECTION_POOL, reject, resolve);
+        }).then(function (res) {
+                if (res['tableCount'] != 3) {
+                    console.log("**ATTENTION SOME TABLES ARE MISSING IN THE SCHEMA. CREATE THE TABLES SPECIFIED UNDER schema/mysql/**");
+                }
+            });
+    } else if (global.DB_CONFIG['default']['name'] === 'pgsql') {
+        var pgClient = require(global._ROOT + '/db/pgsql/pgsql');
+        pgClient.haveAllRequiredTables()
+            .then(function (rows) {
+                if (!rows || rows.length != 3) {
+                    console.log("**ATTENTION SOME TABLES ARE MISSING IN THE SCHEMA. CREATE THE TABLES SPECIFIED UNDER schema/pgsql/**");
+                }
+            })
+    }
+}
