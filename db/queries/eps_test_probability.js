@@ -10,11 +10,13 @@ exports.createUserOption = function () {
     return dbCommon.getQuery(pgQuery, mysqlQuery);
 };
 
-exports.updateConversion = function () {
-    var pgQuery = "update eps_test_probability set conversion = conversion + 1 where \
-                 user_unique_id=${userUniqueId} and test_name=${testName} and option_no=${optionNumber}";
-    var mysqlQuery = "update eps_test_probability set conversion = conversion + 1 where \
-                 user_unique_id=? and test_name=? and option_no=?";
+exports.updateConversion = function (userDomainId) {
+    var appendUserDomainId = userDomainId ? ", user_domain_id=${userDomainId}" : "";
+    var pgQuery = "update eps_test_probability set conversion = conversion + 1 " + appendUserDomainId + "\
+                    where  user_unique_id=${userUniqueId} and test_name=${testName} and option_no=${optionNumber}";
+    appendUserDomainId = userDomainId ? ", user_domain_id=${?}" : "";
+    var mysqlQuery = "update eps_test_probability set conversion = conversion + 1" + appendUserDomainId + " where \
+                        user_unique_id=? and test_name=? and option_no=?";
 
     return dbCommon.getQuery(pgQuery, mysqlQuery);
 };

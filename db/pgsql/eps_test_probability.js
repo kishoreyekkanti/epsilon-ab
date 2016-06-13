@@ -33,9 +33,15 @@ exports.createUserOption = function (userUniqueId, testName, optionNumber) {
     return dbCommon.executeQuery(query, options);
 };
 
-exports.updateConversion = function (userUniqueId, testName, optionNumber) {
-    var query = testProbabilityQuery.updateConversion();
-    return dbCommon.executeQuery(query, dbCommon.getOptions(userUniqueId, testName, optionNumber));
+exports.updateConversion = function (userUniqueId, testName, optionNumber, userDomainId) {
+    var query = testProbabilityQuery.updateConversion(userDomainId);
+    var options = {
+        userUniqueId: userUniqueId,
+        testName: testName,
+        optionNumber: optionNumber,
+        userDomainId: userDomainId
+    };
+    return dbCommon.executeQuery(query, options);
 };
 
 exports.fetchProbabilityByUserUniqueId = function (userUniqueId) {
