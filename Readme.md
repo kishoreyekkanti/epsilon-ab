@@ -13,8 +13,7 @@
  if in case the app dies
  10. Json based logging using Bunyan
  11. A postman collection of all the apis is attached at the bottom of this documentation, you can download and play with it
-
- This project uses the strategy explained by Steve Hanov in his [blog](http://stevehanov.ca/blog/index.php?id=132)
+ 12. This project uses the strategy explained by Steve Hanov in his [blog](http://stevehanov.ca/blog/index.php?id=132)
  
 # Usage
 ### Installation
