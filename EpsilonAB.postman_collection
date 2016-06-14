@@ -1,0 +1,171 @@
+{
+	"variables": [],
+	"info": {
+		"name": "EpsilonAB",
+		"_postman_id": "abde9b19-4cc2-e2b6-d32f-e7de0127cb8a",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GetStats",
+			"request": {
+				"url": "http://localhost:5000/epsTest/show_beta_navigation/stats",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"options\":{\n\"weightage\":\"40\",\n\"status\":\"inactive\",\n\"test_description\":\"updated\",\n\"auto_optimise\":\"false\"\n}\n}"
+				},
+				"description": "Show Stats of an eps test"
+			},
+			"response": []
+		},
+		{
+			"name": "GetAnOption",
+			"request": {
+				"url": "http://localhost:5000/epsOption?user_unique_id=aasd2345&test_name=show_beta_navigation",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": "Get an option(ab test option) for the given unique id and the test name"
+			},
+			"response": []
+		},
+		{
+			"name": "RewardAnOption",
+			"request": {
+				"url": "http://localhost:5000/epsTest/reward",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user_unique_id\":\"aasd2345\"\n}"
+				},
+				"description": "reward an ab test option"
+			},
+			"response": []
+		},
+		{
+			"name": "AddOrUpdateConversion",
+			"request": {
+				"url": "http://localhost:5000/epsTest/conversion",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"user_unique_id\":\"aasd2345\"\n}"
+				},
+				"description": "Register a funnel conversion for the test name, option number and the user_unique_id"
+			},
+			"response": []
+		},
+		{
+			"name": "CreateABTest",
+			"request": {
+				"url": "http://localhost:5000/epsTest",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"test_name\":\"show_button_colors_for_signup\",\n    \"options\":[\n        {\n            \"option_no\":1,\n            \"weightage\":30,\n            \"auto_optimise\":true,\n            \"status\":\"active\",\n            \"test_description\":\"Show Red Color\"\n        },\n        {\n            \"option_no\":2,\n            \"weightage\":40,\n            \"auto_optimise\":true,\n            \"status\":\"active\",\n            \"test_description\":\"Show Blue Color\"\n        },\n        {\n            \"option_no\":3,\n            \"weightage\":30,\n            \"auto_optimise\":true,\n            \"status\":\"active\",\n            \"test_description\":\"Show Green Color\"\n        }\n        \n        ]\n}"
+				},
+				"description": "Allows to create an ab test"
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllABTests",
+			"request": {
+				"url": "http://localhost:5000/epsTest",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": "retrieves all ab tests in the system"
+			},
+			"response": []
+		},
+		{
+			"name": "GetAbTestById",
+			"request": {
+				"url": "http://localhost:5000/epsTest/21",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"description": "retrieve ab test by test id"
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateATestOption",
+			"request": {
+				"url": "http://localhost:5000/epsTest/20/options/2",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"options\":{\n        \"weightage\":30,\n        \"auto_optimise\":false,\n        \"status\":\"active\",\n        \"test_description\":\"updated the Blue color option\"\n    }\n}"
+				},
+				"description": "updates a test option"
+			},
+			"response": []
+		}
+	]
+}

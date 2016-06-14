@@ -24,7 +24,7 @@ Clone the project and run `npm install` to download all the dependencies.
  ignored. Example postgresql configuration can be as below. `"dev"` just resembles its being run on dev mode. You can 
  change it to `"production"` (if you want to) and pass in your `NODE_ENV` variable at the start up time.
  
-##### Postgresql configuration 
+##### Postgresql configuration (config/config.json)
 
   ```javascript
   {
@@ -40,7 +40,7 @@ Clone the project and run `npm install` to download all the dependencies.
       }
   }
   ```
-##### Mysql configuration  
+##### Mysql configuration  (config/config.json)
 You need the mysql.sock socketPath if you are on Mac
 
   ```javascript
@@ -146,7 +146,8 @@ So the option/branch selected by the algorithm is `3`
 
 ##### Update a test option
 If you want to change the test description or change the weightage of any option(this will skew the results as the test
-was already setup), you can use this api. 
+was already setup), you can use this api.
+ 
 *REQUEST*
 ```curl
 curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{
@@ -168,6 +169,7 @@ curl -X POST -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -
 ##### Award an option
 Say in the above example of Red, Blue and Green buttons if the user selected Red button and you want to reward that selection
 of user then you should use this api.
+
 *REQUEST*
 ```curl
 curl -X PUT -H "Content-Type: application/json" -H "Cache-Control: no-cache"  -d '{
@@ -190,6 +192,7 @@ This conversion updates will really help to determine the quality of traffic for
 Along with this request you can also optionally send the `user_domain_id`. This is nothing but the other user_unique id but 
  in domain terms. Say for example during the initial branch selection we send the cookie string as unique id, post signup 
  we might have got the real user id of the user and we want to update the real user id(user_domain_id against the cookie id.
+ 
 *REQUEST*
 ```curl
 curl -X PUT -H "Content-Type: application/json" -H "Cache-Control: no-cache" -d '{
@@ -206,6 +209,7 @@ curl -X PUT -H "Content-Type: application/json" -H "Cache-Control: no-cache" -d 
 
 ##### Get All AB Tests
 To fetch all the ab tests setup in the system
+
 *REQUEST*
 ```curl
 curl -X GET -H "Content-Type: application/json" -H "Cache-Control: no-cache" "http://localhost:5000/epsTest"
@@ -316,6 +320,7 @@ curl -X GET -H "Content-Type: application/json" -H "Cache-Control: no-cache" "ht
 ```
 ##### Get AB tests by id
 Fetch AB test by an id
+
 *REQUEST*
 ```curl
 curl -X GET -H "Content-Type: application/json" -H "Cache-Control: no-cache"  "http://localhost:5000/epsTest/21"
@@ -373,7 +378,7 @@ curl -X GET -H "Content-Type: application/json" -H "Cookie: PHPSESSID= fd1c94418
 }
 ```
 # Postman collection of the API
-Use this [link]() to download the postman collection. You can directly import this collection and play with the api. 
+Use this [link](https://github.com/kishoreyekkanti/epsilon-ab/blob/master/EpsilonAB.postman_collection) to download the postman collection. You can directly import this collection and play with the api. 
 Make sure you run the seed data under `schema/*/seed.sql` to have some dummy data to start with.
 
 # Future enhancements
