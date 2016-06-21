@@ -27,6 +27,8 @@ Clone the project and run `npm install` to download all the dependencies.
  
 ##### Postgresql configuration (config/config.json)
 
+Change the db credentials as required. Below is just an example.
+
   ```javascript
   {
     "dev": {
@@ -42,7 +44,9 @@ Clone the project and run `npm install` to download all the dependencies.
   }
   ```
 ##### Mysql configuration  (config/config.json)
-You need the mysql.sock socketPath if you are on Mac
+
+You need the mysql.sock socketPath if you are on Mac. 
+Change the db credentials as required. Below is just an example.
 
   ```javascript
   {
